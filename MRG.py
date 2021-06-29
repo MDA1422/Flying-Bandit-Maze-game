@@ -9,7 +9,11 @@ screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('MRG')
 
-#main menu
+ class platform(pygame.sprite.Sprite):
+        
+        
+
+     #main menu
 menu_img=pygame.image.load('img/sun')
 
 run = True
