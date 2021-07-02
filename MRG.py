@@ -10,6 +10,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('MRG')
 
  class platform(pygame.sprite.Sprite):
+  def_init__(self,xlo,yloc,imgw,imgh,img):
+   
         
         
 
@@ -23,5 +25,5 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-pygame.quuit()
+pygame.quit()
          
