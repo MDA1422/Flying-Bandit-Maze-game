@@ -72,6 +72,9 @@ class Player():
 					dy = tile[1].top - self.rect.bottom
 					self.vel_y = 0
 
+
+
+
 			
 
 		#update player coordinates
@@ -86,7 +89,8 @@ class Player():
 		screen1.blit(self.image, self.rect)
 		pygame.draw.rect(screen1, (255, 255, 255), self.rect, 2)
         
-        
+#output question
+       
 
 
 
