@@ -39,7 +39,7 @@ class Player():
 		#controls
 		key = pygame.key.get_pressed()
 		if key[pygame.K_UP] and self.jumped == False:
-			self.vel_y = -10
+			self.vel_y = -6
 			self.jumped = True
 		if key[pygame.K_SPACE] == False:
 			self.jumped = False
@@ -71,7 +71,19 @@ class Player():
 				elif self.vel_y >= 0:
 					dy = tile[1].top - self.rect.bottom
 					self.vel_y = 0
+        #check for collision with chests
+			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block, False):
+				c=print(input('What is 1+1?'))
+				if c==2:
+					print('correct')
+				else:
+					print('wrong answer')
+					continue
+				
+					
 
+
+						
 
 
 
@@ -121,6 +133,9 @@ class World():
 					img_rect.y = row_count * tile_size
 					tile = (img, img_rect)
 					self.tile_list.append(tile)
+				if tile == 3:
+					Question=Questionblock(col_count * tile_size +10, row_count * tile_size +40)
+					Question_block.add(Question)
 				col_count += 1
 			row_count += 1
 
@@ -128,7 +143,14 @@ class World():
 		for tile in self.tile_list:
 			screen1.blit(tile[0], tile[1])
 			pygame.draw.rect(screen1, (255, 255, 255), tile[1], 2)
-			
+
+class Questionblock(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load('images/gate.jpg')
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y			
             
 
 #The grid for which to assign different blocks to places in window
@@ -141,13 +163,14 @@ world_data=[
 [1,1,1,0,0,0,0,0,0,1],
 [1,0,1,1,0,0,0,0,0,1],
 [1,0,0,1,1,1,1,1,0,1],
-[1,0,0,0,0,2,0,0,0,1],
+[1,0,0,0,0,3,0,0,0,1],
 [1,1,1,1,1,1,1,1,1,1],
 ]
 
-
-world=World(world_data)
+Question_block= pygame.sprite.Group()
+world= World(world_data)
 player = Player(100, screen_height1 - 130)
+
 
 run = True
 while run:
@@ -155,7 +178,8 @@ while run:
     screen1.blit(game_bg,(1,1))
     world.draw()
     player.update()
-
+    Question_block.update()
+    Question_block.draw(screen1)
     
 
     for event in pygame.event.get():
