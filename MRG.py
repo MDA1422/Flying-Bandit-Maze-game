@@ -27,6 +27,8 @@ class Player():
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
+		self.width = self.image.get_width()
+		self.height = self.image.get_height()
 		self.vel_y = 0
 		self.jumped = False
 
@@ -36,8 +38,8 @@ class Player():
 
 		#controls
 		key = pygame.key.get_pressed()
-		if key[pygame.K_SPACE] and self.jumped == False:
-			self.vel_y = -15
+		if key[pygame.K_UP] and self.jumped == False:
+			self.vel_y = -10
 			self.jumped = True
 		if key[pygame.K_SPACE] == False:
 			self.jumped = False
@@ -55,6 +57,22 @@ class Player():
 		dy += self.vel_y
 
 		#check for collision
+		for tile in world.tile_list:
+			#check for collision in x direction
+			if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+				dx = 0
+			#check for collision in y direction
+			if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+				#check if below the ground i.e. jumping
+				if self.vel_y < 0:
+					dy = tile[1].bottom - self.rect.top
+					self.vel_y = 0
+				#check if above the ground i.e. falling
+				elif self.vel_y >= 0:
+					dy = tile[1].top - self.rect.bottom
+					self.vel_y = 0
+
+			
 
 		#update player coordinates
 		self.rect.x += dx
@@ -66,6 +84,7 @@ class Player():
 
 		#draw player onto screen
 		screen1.blit(self.image, self.rect)
+		pygame.draw.rect(screen1, (255, 255, 255), self.rect, 2)
         
         
 
@@ -104,6 +123,8 @@ class World():
 	def draw(self):
 		for tile in self.tile_list:
 			screen1.blit(tile[0], tile[1])
+			pygame.draw.rect(screen1, (255, 255, 255), tile[1], 2)
+			
             
 
 #The grid for which to assign different blocks to places in window
@@ -113,9 +134,9 @@ world_data=[
 [1,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,1],
-[1,1,1,1,1,1,1,1,0,1],
+[1,1,1,0,0,0,0,0,0,1],
+[1,0,1,1,0,0,0,0,0,1],
+[1,0,0,1,1,1,1,1,0,1],
 [1,0,0,0,0,2,0,0,0,1],
 [1,1,1,1,1,1,1,1,1,1],
 ]
