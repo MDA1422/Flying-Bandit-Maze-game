@@ -48,8 +48,10 @@ class Player():
 			dx -= 5
 		if key[pygame.K_RIGHT]:
 			dx += 5
-        
 
+	    
+        
+        
 
 		#add gravity
 		self.vel_y += 1
@@ -72,6 +74,9 @@ class Player():
 				elif self.vel_y >= 0:
 					dy = tile[1].top - self.rect.bottom
 					self.vel_y = 0
+
+        
+
         #check for collision with chests
 			import random
 			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block, False):
@@ -108,8 +113,8 @@ class Player():
 				else:
 					print('wrong answer')
 					break
-				
-					
+
+	        		
 
 
 						
@@ -169,13 +174,19 @@ class World():
 				if tile == 5:
 					Question3=Questionblock3(col_count * tile_size +10, row_count * tile_size +40)
 					Question_block3.add(Question3)
+				if tile == 6:
+					door=escapedoor(col_count * tile_size +10, row_count * tile_size -12)
+					doorforescape.add(door)
 				col_count += 1
 			row_count += 1
 
 	def draw(self):
 		for tile in self.tile_list:
 			screen1.blit(tile[0], tile[1])
-			
+
+
+
+
 #For addition questions
 class Questionblock(pygame.sprite.Sprite):
 	def __init__(self, x, y):
@@ -199,7 +210,16 @@ class Questionblock3(pygame.sprite.Sprite):
 		self.image = pygame.image.load('images/chest.jpg')
 		self.rect = self.image.get_rect()
 		self.rect.x = x
+		self.rect.y = y	
+
+class escapedoor(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load('images/door.png')
+		self.rect = self.image.get_rect()
+		self.rect.x = x
 		self.rect.y = y				
+            			
             
 
 #The grid for which to assign different blocks to places in window
@@ -207,7 +227,7 @@ world_data=[
 [1,1,1,1,1,1,1,1,1,1],
 [1,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,4,0,0,0,1],
-[1,0,0,1,1,1,0,0,0,1],
+[1,0,0,1,1,1,0,6,0,1],
 [1,5,0,0,0,1,1,1,1,1],
 [1,1,0,0,0,0,0,0,0,1],
 [1,0,1,1,4,0,0,0,0,1],
@@ -217,6 +237,7 @@ world_data=[
 ]
 
 Question_block= pygame.sprite.Group()
+doorforescape= pygame.sprite.Group()
 Question_block2= pygame.sprite.Group()
 Question_block3= pygame.sprite.Group()
 world= World(world_data)
@@ -235,6 +256,8 @@ while run:
     Question_block.draw(screen1)
     Question_block2.update()
     Question_block2.draw(screen1)
+    doorforescape.update()
+    doorforescape.draw(screen1)
     Question_block3.update()
     Question_block3.draw(screen1)
 
