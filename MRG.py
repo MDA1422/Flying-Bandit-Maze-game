@@ -101,7 +101,7 @@ class Player():
 				else:
 					print('wrong answer')
 					break
-			
+            
 			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block3, False):
 				d=random.randint(21,99)
 				x=random.randint(1,20)
@@ -113,8 +113,10 @@ class Player():
 				else:
 					print('wrong answer')
 					break
+			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, doorforescape, False):
+				print('You managed to escape!')
 
-	        		
+				
 
 
 						
@@ -236,10 +238,15 @@ world_data=[
 [1,1,1,1,1,1,1,1,1,1],
 ]
 
+
 Question_block= pygame.sprite.Group()
-doorforescape= pygame.sprite.Group()
+
 Question_block2= pygame.sprite.Group()
+
 Question_block3= pygame.sprite.Group()
+
+doorforescape= pygame.sprite.Group()
+
 world= World(world_data)
 player = Player(100, screen_height1 - 130)
 
@@ -254,13 +261,15 @@ while run:
 	
     Question_block.update()
     Question_block.draw(screen1)
+    
     Question_block2.update()
     Question_block2.draw(screen1)
-    doorforescape.update()
-    doorforescape.draw(screen1)
+    
     Question_block3.update()
     Question_block3.draw(screen1)
-
+    
+    doorforescape.update()
+    doorforescape.draw(screen1)
     
 
     for event in pygame.event.get():
