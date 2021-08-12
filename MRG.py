@@ -11,7 +11,7 @@ screen_width1 = 600
 screen_height1 = 600
 
 screen1 = pygame.display.set_mode((screen_width1, screen_height1))
-pygame.display.set_caption('MRG')
+pygame.display.set_caption('Flying Bandit Maze')
 
 #background image
 game_bg=pygame.image.load('images/878.jpg')
@@ -85,6 +85,29 @@ class Player():
 				else:
 					print('wrong answer')
 					break
+			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block2, False):
+				d=random.randint(1,10)
+				x=random.randint(1,10)
+				z=d*x
+				c=int(input('What is {}*{}?'.format(d,x)))
+				if c ==(z):
+					print('correct')
+					break
+				else:
+					print('wrong answer')
+					break
+			
+			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block3, False):
+				d=random.randint(21,99)
+				x=random.randint(1,20)
+				z=d-x
+				c=int(input('What is {}-{}?'.format(d,x)))
+				if c ==(z):
+					print('correct')
+					break
+				else:
+					print('wrong answer')
+					break
 				
 					
 
@@ -143,6 +166,9 @@ class World():
 				if tile == 4:
 					Question2=Questionblock2(col_count * tile_size +10, row_count * tile_size +40)
 					Question_block2.add(Question2)
+				if tile == 5:
+					Question3=Questionblock3(col_count * tile_size +10, row_count * tile_size +40)
+					Question_block3.add(Question3)
 				col_count += 1
 			row_count += 1
 
@@ -150,7 +176,7 @@ class World():
 		for tile in self.tile_list:
 			screen1.blit(tile[0], tile[1])
 			
-
+#For addition questions
 class Questionblock(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
@@ -158,32 +184,41 @@ class Questionblock(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y	
-
+#For multiplication questions
 class Questionblock2(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load('images/chest.jpg')
 		self.rect = self.image.get_rect()
 		self.rect.x = x
-		self.rect.y = y			
+		self.rect.y = y	
+#For subtraction questions
+class Questionblock3(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load('images/chest.jpg')
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y				
             
 
 #The grid for which to assign different blocks to places in window
 world_data=[
 [1,1,1,1,1,1,1,1,1,1],
 [1,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,4,0,0,0,1],
 [1,0,0,1,1,1,0,0,0,1],
-[1,0,0,0,0,1,1,1,1,1],
+[1,5,0,0,0,1,1,1,1,1],
 [1,1,0,0,0,0,0,0,0,1],
-[1,1,1,1,0,3,0,0,0,1],
-[1,0,0,1,1,1,1,1,0,1],
+[1,0,1,1,4,0,0,0,0,1],
+[1,0,0,0,1,1,1,1,0,1],
 [1,0,0,0,0,3,0,0,0,1],
 [1,1,1,1,1,1,1,1,1,1],
 ]
 
 Question_block= pygame.sprite.Group()
 Question_block2= pygame.sprite.Group()
+Question_block3= pygame.sprite.Group()
 world= World(world_data)
 player = Player(100, screen_height1 - 130)
 
@@ -200,6 +235,8 @@ while run:
     Question_block.draw(screen1)
     Question_block2.update()
     Question_block2.draw(screen1)
+    Question_block3.update()
+    Question_block3.draw(screen1)
 
     
 
