@@ -1,3 +1,4 @@
+from random import randint
 import pygame
 from pygame.locals import *
 
@@ -72,13 +73,18 @@ class Player():
 					dy = tile[1].top - self.rect.bottom
 					self.vel_y = 0
         #check for collision with chests
+			import random
 			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block, False):
-				c =input('What is 1 + 1?')
-				if c ==('2'):
+				d=random.randint(11,99)
+				x=random.randint(11,99)
+				z=d+x
+				c=int(input('What is {}+{}?'.format(d,x)))
+				if c ==(z):
 					print('correct')
 					break
 				else:
 					print('wrong answer')
+					break
 				
 					
 
@@ -99,9 +105,7 @@ class Player():
 
 		#draw player onto screen
 		screen1.blit(self.image, self.rect)
-		pygame.draw.rect(screen1, (255, 255, 255), self.rect, 2)
-        
-#output question
+		
        
 
 
@@ -136,18 +140,29 @@ class World():
 				if tile == 3:
 					Question=Questionblock(col_count * tile_size +10, row_count * tile_size +40)
 					Question_block.add(Question)
+				if tile == 4:
+					Question2=Questionblock2(col_count * tile_size +10, row_count * tile_size +40)
+					Question_block2.add(Question2)
 				col_count += 1
 			row_count += 1
 
 	def draw(self):
 		for tile in self.tile_list:
 			screen1.blit(tile[0], tile[1])
-			pygame.draw.rect(screen1, (255, 255, 255), tile[1], 2)
+			
 
 class Questionblock(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('images/gate.jpg')
+		self.image = pygame.image.load('images/chest.jpg')
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y	
+
+class Questionblock2(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load('images/chest.jpg')
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y			
@@ -158,28 +173,34 @@ world_data=[
 [1,1,1,1,1,1,1,1,1,1],
 [1,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,1],
-[1,1,1,0,0,0,0,0,0,1],
-[1,0,1,1,0,0,0,0,0,1],
+[1,0,0,1,1,1,0,0,0,1],
+[1,0,0,0,0,1,1,1,1,1],
+[1,1,0,0,0,0,0,0,0,1],
+[1,1,1,1,0,3,0,0,0,1],
 [1,0,0,1,1,1,1,1,0,1],
 [1,0,0,0,0,3,0,0,0,1],
 [1,1,1,1,1,1,1,1,1,1],
 ]
 
 Question_block= pygame.sprite.Group()
+Question_block2= pygame.sprite.Group()
 world= World(world_data)
 player = Player(100, screen_height1 - 130)
 
 
 run = True
 while run:
+	
     clock.tick(fps)
     screen1.blit(game_bg,(1,1))
     world.draw()
     player.update()
+	
     Question_block.update()
     Question_block.draw(screen1)
+    Question_block2.update()
+    Question_block2.draw(screen1)
+
     
 
     for event in pygame.event.get():
