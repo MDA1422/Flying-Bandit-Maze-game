@@ -73,12 +73,12 @@ class Player():
 					self.vel_y = 0
         #check for collision with chests
 			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block, False):
-				c=print(input('What is 1+1?'))
-				if c==2:
+				c =input('What is 1 + 1?')
+				if c ==('2'):
 					print('correct')
+					break
 				else:
 					print('wrong answer')
-					continue
 				
 					
 
