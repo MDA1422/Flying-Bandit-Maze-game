@@ -1,7 +1,8 @@
 from random import randint
+from typing import Text
 import pygame
 from pygame.locals import *
-
+import time
 pygame.init()
 
 clock=pygame.time.Clock()
@@ -108,13 +109,19 @@ class Player():
 				z=d-x
 				c=int(input('What is {}-{}?'.format(d,x)))
 				if c ==(z):
-					print('correct')
-					break
+					font2=pygame.font.Font('freesansbold.ttf',32)
+					text2=font2.render("CORRECT ANSWER!",True,(0,225,0))
+					screen1.blit(text2,(22,0))
 				else:
-					print('wrong answer')
+					font3=pygame.font.Font('freesansbold.ttf',32)
+					text3=font3.render("WRONG ANSWER!",True,(0,225,0))
+					screen1.blit(text3,(22,0))
 					break
-			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, doorforescape, False):
-				print('You managed to escape!')
+			if pygame.sprite.spritecollide(self, doorforescape, False):
+			 
+				font=pygame.font.Font('freesansbold.ttf',32)
+				text1=font.render("YOU MANAGED TO ESCAPE!!",True,(0,225,0))
+				screen1.blit(text1,(22,0))
 
 				
 
@@ -185,7 +192,7 @@ class World():
 	def draw(self):
 		for tile in self.tile_list:
 			screen1.blit(tile[0], tile[1])
-
+              
 
 
 
@@ -254,13 +261,17 @@ player = Player(100, screen_height1 - 130)
 run = True
 while run:
 	
+	
     clock.tick(fps)
     screen1.blit(game_bg,(1,1))
+    
     world.draw()
     player.update()
 	
+	
     Question_block.update()
     Question_block.draw(screen1)
+	
     
     Question_block2.update()
     Question_block2.draw(screen1)
