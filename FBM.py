@@ -31,6 +31,16 @@ def showtext(message):
 	text=font.render(message,True,(0,225,0))
 	for pygame.tim in range (fps):
 		screen1.blit(text,(22,0))
+def right_answer():
+	
+	showtext('CORRECT Answer')
+	print('correct')
+def wrong_answer():
+	
+	showtext('WRONG Answer')
+	print('wrong')
+	
+
 class InputBox:
 	def __init__(self, x, y, w, h, text=''):
 		self.rect = pg.Rect(x, y, w, h)
@@ -77,10 +87,6 @@ class Player():
 		if key[pygame.K_RIGHT]:
 			dx += 5
 
-	    
-        
-        
-
 		#add gravity
 		self.vel_y += 1
 		if self.vel_y > 5:
@@ -113,16 +119,10 @@ class Player():
 				z=d+x
 				c=int(input('What is {}+{}?'.format(d,x)))
 				if c ==(z):
-					print('correct')
-					showtext('CORRECT Answer')
-					break
-					
-					
-						
-						
+					right_answer
+					break		
 				else:
-					print('wrong')
-					showtext('WRONG Answer')
+					wrong_answer
 					break
 			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block2, False):
 				d=random.randint(1,10)
@@ -130,41 +130,27 @@ class Player():
 				z=d*x
 				c=int(input('What is {}*{}?'.format(d,x)))
 				if c ==(z):
-					print('correct')
-					pygame.time.wait(50)
-					showtext('CORRECT Answer')
+					right_answer
 					break
 				else:
-					pygame.time.wait(50)
-					showtext('CORRECT Answer')
+					wrong_answer
 					break
-            
 			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block3, False):
 				d=random.randint(21,99)
 				x=random.randint(1,20)
 				z=d-x
 				c=int(input('What is {}-{}?'.format(d,x)))
 				if c ==(z):
-					showtext('CORRECT Answer')
-
+					right_answer
 				else:
-					showtext('WRONG Answer')
-					
+					wrong_answer
 					break
 			if pygame.sprite.spritecollide(self, doorforescape, False):
 			 
 				font=pygame.font.Font('freesansbold.ttf',32)
 				text1=font.render("YOU MANAGED TO ESCAPE!!",True,(0,225,0))
 				screen1.blit(text1,(22,0))
-
-				
-
-
-						
-
-
-
-			
+	
 
 		#update player coordinates
 		self.rect.x += dx
@@ -178,10 +164,30 @@ class Player():
 		screen1.blit(self.image, self.rect)
 		end_run()
 		
-       
 
 
-
+#For addition questions
+class Questionblock(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load('images/chest.jpg')
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y	
+#For multiplication questions
+class Questionblock2(Questionblock):
+	pass
+	
+#For subtraction questions
+class Questionblock3(Questionblock):
+	 pass
+class escapedoor(pygame.sprite.Sprite):
+	  def __init__(self, x, y):
+		  pygame.sprite.Sprite.__init__(self)
+		  self.image = pygame.image.load('images/door.png')
+		  self.rect = self.image.get_rect()
+		  self.rect.x = x
+		  self.rect.y = y
 
 class World():
 	def __init__(self, data):
@@ -189,8 +195,6 @@ class World():
 
 		#load images
 		stone_img = pygame.image.load('images/stone.jpg')
-		gate_img = pygame.image.load('images/gate.jpg')
-
 		row_count = 0
 		for row in data:
 			col_count = 0
@@ -202,13 +206,7 @@ class World():
 					img_rect.y = row_count * tile_size
 					tile = (img, img_rect)
 					self.tile_list.append(tile)
-				if tile == 2:
-					img = pygame.transform.scale(gate_img, (tile_size, tile_size))
-					img_rect = img.get_rect()
-					img_rect.x = col_count * tile_size
-					img_rect.y = row_count * tile_size
-					tile = (img, img_rect)
-					self.tile_list.append(tile)
+			    
 				if tile == 3:
 					Question=Questionblock(col_count * tile_size +10, row_count * tile_size +40)
 					Question_block.add(Question)
@@ -227,50 +225,10 @@ class World():
 	def draw(self):
 		for tile in self.tile_list:
 			screen1.blit(tile[0], tile[1])
-              
 
-
-class QuestionBlock:
-	def __init__(self, x, y, gridNumber, text, image) -> None:
-		pass
-
-
-#For addition questions
-class Questionblock(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('images/chest.jpg')
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y	
-#For multiplication questions
-class Questionblock2(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('images/chest.jpg')
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y	
-#For subtraction questions
-class Questionblock3(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('images/chest.jpg')
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y	
-
-class escapedoor(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('images/door.png')
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y				
-            			
-            
-
+        
 #The grid for which to assign different blocks to places in window
+
 world_data=[
 [1,1,1,1,1,1,1,1,1,1],
 [1,0,0,0,0,0,0,0,0,1],
@@ -283,8 +241,6 @@ world_data=[
 [1,0,0,0,0,3,0,0,0,1],
 [1,1,1,1,1,1,1,1,1,1],
 ]
-
-
 Question_block= pygame.sprite.Group()
 
 Question_block2= pygame.sprite.Group()
