@@ -41,13 +41,6 @@ def wrong_answer():
 	print('wrong')
 	
 
-class InputBox:
-	def __init__(self, x, y, w, h, text=''):
-		self.rect = pg.Rect(x, y, w, h)
-		self.color =COLOR_INACTIVE
-		self.text = text
-		self.txt_surface = FONT.render(text, True, self.color)
-		self.active = False
 		
 	
 #background image
