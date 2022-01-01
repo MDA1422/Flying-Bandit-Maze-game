@@ -6,7 +6,7 @@ import time
 import pygame as pg
 import random
 pygame.init()
-
+pygame.font.init()
 clock=pygame.time.Clock()
 fps=60
 
@@ -26,23 +26,17 @@ COLOR_INACTIVE = pg.Color('lightskyblue3')
 COLOR_ACTIVE = pg.Color('dodgerblue2')
 FONT = pg.font.Font(None, 32)
 
-def showtext(message):
-	font=pygame.font.Font('freesansbold.ttf',32)
-	text=font.render(message,True,(0,225,0))
-	for pygame.tim in range (fps):
-		screen1.blit(text,(22,0))
+
 def right_answer():
-	
-	showtext('CORRECT Answer')
 	print('correct')
-def wrong_answer():
 	
-	showtext('WRONG Answer')
+def wrong_answer():
 	print('wrong')
 	
 
-		
-	
+
+
+
 #background image
 game_bg=pygame.image.load('images/878.jpg')
 #defines grid so later I can assign blocks to them
@@ -112,10 +106,10 @@ class Player():
 				z=d+x
 				c=int(input('What is {}+{}?'.format(d,x)))
 				if c ==(z):
-					right_answer
+					print(right_answer)
 					break		
 				else:
-					wrong_answer
+					print(wrong_answer)
 					break
 			if key[pygame.K_DOWN] and pygame.sprite.spritecollide(self, Question_block2, False):
 				d=random.randint(1,10)
@@ -175,12 +169,12 @@ class Questionblock2(Questionblock):
 class Questionblock3(Questionblock):
 	 pass
 class escapedoor(pygame.sprite.Sprite):
-	  def __init__(self, x, y):
-		  pygame.sprite.Sprite.__init__(self)
-		  self.image = pygame.image.load('images/door.png')
-		  self.rect = self.image.get_rect()
-		  self.rect.x = x
-		  self.rect.y = y
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load('images/door.png')
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
 
 class World():
 	def __init__(self, data):
